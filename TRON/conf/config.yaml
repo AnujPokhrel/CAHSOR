@@ -1,0 +1,90 @@
+# Training parameters
+train_params:
+  epochs: 50
+  device: cuda:0 # device name, values: "cpu" or "cuda:x" where 'x' is gpu index, or "cuda:a" to use all GPUs
+  optimizer: adamw
+  save_every: 10
+  grad_clipping: 0 # set to zero to disable grad clipping
+  start_saving_best: 10 # start epoch of saving best model
+  seed: 42
+
+# Logger parameters
+logger:
+  workspace: general # workspace name
+  project: CAHSOR # project name
+  experiment_name: exp_32_CAHSOR_VS # name of the experiment
+  tags: "train "
+  resume: False # (boolean) whether to resume training or not
+  online: True # (boolean) whether to store logs online or not
+  experiment_key: "" # can be retrieved from logger dashboard, available if only resuming
+  offline_directory: "./logs" # where to store log data
+  disabled: False # disable the comet ml
+  upload_model: False # upload the model to CometML
+  log_env_details: False # log virtual environment details
+
+# Dataloader parameters
+dataloader:
+  num_workers: 16 # Allowing multi-processing
+  batch_size: 256
+  shuffle: True # whether to shuffle data or not
+  pin_memory: False # use pageable memory or pinned memory (https://developer.nvidia.com/blog/how-optimize-data-transfers-cuda-cc/)
+
+# Train dataset parameters
+dataset:
+  root: ./data/ # where data resides
+  stats: ./data/stat.pkl # stats file
+  resize:
+    - 64
+    - 64
+
+# Validation dataset parameters/ only change parameters that are different from train data
+val_dataset:
+  root: ./valdata/ # where data resides
+  stats: ./data/stat.pkl # stats file
+  resize:
+    - 64
+    - 64
+
+model:
+  rep_size: 512
+  modality: VS
+  load_pretrain: ./checkpoint/tron/exp3-barlow/exp3-barlow.pth
+
+# directories
+directory:
+  model_name: CAHSOR # file name for saved model
+  save: ./checkpoint/CAHSOR/
+  load: ./checkpoint/CAHSOR.pth
+
+# Adam parameters if using Adam optimizer
+adamw:
+  lr: 5e-4
+  betas:
+    - 0.9
+    - 0.999
+  eps: 1e-8
+  weight_decay: 0.01
+  amsgrad: True
+
+# RMSprop parameters if using RMSprop optimizer
+rmsprop:
+  lr: 1e-3
+  momentum: 0
+  alpha: 0.99
+  eps: 1e-8
+  centered: False
+  weight_decay: 0
+
+# SGD parameters if using SGD optimizer
+sgd:
+  lr: 1e-3
+  momentum: 0 # momentum factor
+  weight_decay: 0 # weight decay (L2 penalty)
+  dampening: 0 # dampening for momentum
+  nesterov: False # enables Nesterov momentum
+
+# Stochastic Weight Averaging parameters
+SWA:
+  anneal_strategy: "linear" # 'linear' of 'cos'
+  anneal_epochs: 5 # anneals the lr from its initial value to swa_lr in anneal_epochs within each parameter group
+  swa_lr: 0.05

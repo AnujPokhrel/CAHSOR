@@ -1,0 +1,72 @@
+# Training parameters
+train_params:
+  experiment_name: exp1
+  epochs: 200 # 200
+  device: cuda:0 # device name, values: "cpu" or "cuda:x" where 'x' is gpu index, or "cuda:a" to use all GPUs
+  optimizer: adamw
+  save_every: 50
+  grad_clipping: 0.0 # set to zero to disable grad clipping
+  start_saving_best: 50 # start epoch of saving best model
+  resume: False
+
+# Dataloader parameters
+dataloader:
+  num_workers: 8 # Allowing multi-processing
+  batch_size: 128
+  shuffle: True # whether to shuffle data or not
+  pin_memory: False # use pageable memory or pinned memory (https://developer.nvidia.com/blog/how-optimize-data-transfers-cuda-cc/)
+  drop_last: True
+
+# Train dataset parameters
+dataset:
+  root: ./data # where data resides
+  seed: 42 # random seed for random transformations
+  stats: ./stat.pkl # stats file
+  frequency_rate: 200 # this is IMU frequency rate
+  resize:
+    - 64
+    - 64
+
+model:
+  projection_dim: 1024
+  rep_size: 512
+  l1_coeff: 0.5 # trade-off between two losses
+
+# directories
+directory:
+  model_name: "Tron" # file name for saved model
+  save: "./checkpoint/tron/"
+  load: "./checkpoint/Tron-best.pt"
+
+# Adam parameters if using Adam optimizer
+adamw:
+  lr: 5e-4
+  betas:
+    - 0.9
+    - 0.999
+  eps: 1e-8
+  weight_decay: 5e-5
+  amsgrad: False
+
+# RMSprop parameters if using RMSprop optimizer
+rmsprop:
+  lr: 1e-3
+  momentum: 0
+  alpha: 0.99
+  eps: 1e-8
+  centered: False
+  weight_decay: 0
+
+# SGD parameters if using SGD optimizer
+sgd:
+  lr: 1e-3
+  momentum: 0 # momentum factor
+  weight_decay: 0 # weight decay (L2 penalty)
+  dampening: 0 # dampening for momentum
+  nesterov: False # enables Nesterov momentum
+
+# Stochastic Weight Averaging parameters
+SWA:
+  anneal_strategy: "linear" # 'linear' of 'cos'
+  anneal_epochs: 5 # anneals the lr from its initial value to swa_lr in anneal_epochs within each parameter group
+  swa_lr: 0.05

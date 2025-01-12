@@ -10,3 +10,16 @@
 
 5. MPPI_CAHSOR contains files to run the MPPI + CAHSOR implementation in the robot.
 	->mppi_planner.py script runs the implementation.
+
+## Cite our paper:
+```
+@article{pokhrel2024cahsor,
+  author={Pokhrel, Anuj and Nazeri, Mohammad and Datar, Aniket and Xiao, Xuesu},
+  journal={IEEE Robotics and Automation Letters}, 
+  title={CAHSOR: Competence-Aware High-Speed Off-Road Ground Navigation in $\mathbb {SE}(3)$}, 
+  year={2024},
+  volume={9},
+  number={11},
+  pages={9653-9660},
+  doi={10.1109/LRA.2024.3457369}}
+```
